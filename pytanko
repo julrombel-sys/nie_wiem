@@ -1,5 +1,0 @@
-#include <stdio.h>
-int main(){
-printf("nie wiemco wybrać dzisiaj na obiad kapuste czy braszcz?")
-return 0
-}
