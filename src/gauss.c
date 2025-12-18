@@ -1,8 +1,13 @@
 #include "gauss.h"
+#include "backsubst.h"
 
-void gauss_elim(matrix_t *mat) {
-	int ax, i, j;
-	for(ax = 0; ax < mat->row; ++ax) {
+#include <stdlib.h>
+
+int gauss_elim(matrix_t *mat, double *x) {
+	int ax, i, j, m = mat->row < mat->col ? mat->row : mat->col;
+	for(ax = 0; ax < m; ++ax) {
+		if(mat->mat[ax][ax] == 0)
+			return EXIT_FAILURE;
 		for(i = ax+1; i < mat->row; ++i) {
 			double z = mat->mat[i][ax];
 			for(j = 0; j < mat->col; ++j) {
@@ -12,4 +17,5 @@ void gauss_elim(matrix_t *mat) {
 		}
 		print_matrix(stderr, *mat);
 	}
+	return backsubst(*mat, x);
 }

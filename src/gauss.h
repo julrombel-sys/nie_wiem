@@ -3,6 +3,6 @@
 
 #include "mathio.h"
 
-void gauss_elim(matrix_t*);
+int gauss_elim(matrix_t*, double*);
 
 #endif //_GAUSS_H__

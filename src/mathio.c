@@ -24,7 +24,7 @@ matrix_t read_matrix(FILE *file)  {
 	matrix_t matr;
 	matr.mat = NULL;
 
-	if(fscanf(file, "%d%d", &matr.row, &matr.col) != 2)
+	if(fscanf(file, "%d%d", &matr.row, &matr.col) != 2 || matr.col < 2)
 		return matr;
 	matr.mat = malloc(matr.row * sizeof(double*));
 	if(matr.mat == NULL)
@@ -55,10 +55,9 @@ void print_matrix(FILE* file, matrix_t matr) {
 	fprintf(file, "%dx%d\n", matr.row, matr.col);
 	for(int i = 0; i < matr.row; ++i) {
 		fputc('[', file);
-		for(int j = 0; j < matr.col; ++j)
-			fprintf(file, "\t%.5lg", matr.mat[i][j]);
-		fputc(']', file);
-		fputc('\n', file);
+		for(int j = 0; j < matr.col-1; ++j)
+			fprintf(file, "\t%3.5lg", matr.mat[i][j]);
+		fprintf(file, "\t|%10lg]\n", matr.mat[i][matr.col-1]);
 	}
 }
 

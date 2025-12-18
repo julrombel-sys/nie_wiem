@@ -3,7 +3,6 @@
 
 #include "mathio.h"
 #include "gauss.h"
-#include "backsubst.h"
 
 int main(int argc, char *argv[]) {
 	if(argc != 2) {
@@ -26,11 +25,26 @@ int main(int argc, char *argv[]) {
 
 	puts("Podana macierz:");
 	print_matrix(stdout, matr);
-
-	gauss_elim(&matr);
+	double *x = malloc(matr.row * sizeof(double));
+	if(x == NULL) {
+		fprintf(stderr, "Błąd pamięci\n");
+		free_matrix(matr);
+		return 1;
+	}
+	if(gauss_elim(&matr, x) != EXIT_SUCCESS) {
+		fprintf(stderr, "%s: Nie udało się rozwiązać układu równań!\n", argv[0]);
+		free_matrix(matr);
+		free(x);
+		return 1;
+	}
 	puts("Po elimacji Gaussa:");
 	print_matrix(stdout, matr);
 
+	puts("Rozwiązania:");
+	for(int i = 0; i < matr.row; ++i)
+		printf("x_%d: %lg\n", i+1, x[i]);
+
+	free(x);
 	free_matrix(matr);
 	return 0;
 }
