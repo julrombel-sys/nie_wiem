@@ -2,24 +2,24 @@
 #include <stdio.h>
 
 /* Implementacja wstawiania wstecznego */
-int backsubst(double A[][100], double b[], double x[], int k)
+int backsubst(matrix_t A, double *x)
 {
-    int i, j;
+    int i, j, k = A.row;
 
     for (i = k - 1; i >= 0; i--) {
 
         /* Sprawdzenie elementu na przekatnej */
-        if (A[i][i] == 0.0) {
+        if (A.mat[i][i] == 0.0) {
             return 1; /* blad */
         }
 
-        x[i] = b[i];
+        x[i] = A.mat[i][A.col-1];
 
         for (j = i + 1; j < k; j++) {
-            x[i] -= A[i][j] * x[j];
+            x[i] -= A.mat[i][j] * x[j];
         }
 
-        x[i] /= A[i][i];
+        x[i] /= A.mat[i][i];
     }
 
     return 0; /* sukces */
