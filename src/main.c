@@ -37,6 +37,12 @@ int main(int argc, char *argv[]) {
 		free(x);
 		return 1;
 	}
+	if(matr.row == 0) {
+		puts("Macierz jest zerowa, nie można podać rozwiązań");
+		free_matrix(matr);
+		free(x);
+		return 0;
+	}
 	puts("Po elimacji Gaussa:");
 	print_matrix(stdout, matr);
 

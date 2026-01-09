@@ -10,6 +10,11 @@ static int all_equal(double *arr, int siz, double val) {
 	return 1;
 }
 
+static void add_to(double *dst, double *src, int siz) {
+	for(int i = 0; i < siz; ++i)
+		dst[i] += src[i];
+}
+
 int gauss_elim(matrix_t *mat, double *x) {
 	int ax, i, j;
 	for(ax = 0; ax < mat->row; ++ax) {
@@ -21,9 +26,17 @@ int gauss_elim(matrix_t *mat, double *x) {
 				mat->mat[mat->row] = NULL;
 				ax--;
 				continue;
+			} else {
+				for(i = 0; i < mat->row; ++i) {
+					if(mat->mat[i][ax] != 0) {
+						add_to(mat->mat[ax], mat->mat[i], mat->col);
+						goto SKIP;
+					}
+				}
+				return EXIT_FAILURE;
 			}
-			return EXIT_FAILURE;
 		}
+	SKIP:
 		for(i = ax+1; i < mat->row; ++i) {
 			double z = mat->mat[i][ax];
 			for(j = 0; j < mat->col; ++j) {
